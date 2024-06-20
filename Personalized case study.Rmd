@@ -1,0 +1,329 @@
+---
+title: "QMM 1002_CASE STUDY 1_INEMESIT UDOKANG_A00271891"
+output: html_document
+Name: Inemesit Udokang
+Student ID: A00271891
+date: "2024-04-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE}
+personal_data <- read.csv(file.choose(), header = TRUE)
+
+
+
+
+
+```
+
+## Introduction
+
+I have been collecting data and keeping track of my daily activities for some time. The data was collected from two different semesters: the first semester and the second semester. The dates range from October 31, 2023, to April 16, 2024.
+
+
+The variables in the personalized data set are as follows:
+
+| Variable                              | Type         |
+|---------------------------------------|--------------|
+| Date                                  | Identifier   |
+| Zoom (hours)                          | Quantitative |
+| Study (hours)                         | Quantitative |
+| Sleep (hours)                         | Quantitative |
+| Tea                                   | Quantitative |
+| Twitter feed (news feed)              | Categorical  |
+| Daily exercise(activity performed)    | Categorical  |
+| Daily task achievement (scale of 1-5  | Categorical  |
+| Time spent listening to music (hours) | Quantitative |
+| Semester (First & Second)             | Categorical  |
+
+This information will provide me with enough information to study my habits and better understand my lifestyle. The major goal of this case study is to answer the below questions;
+
+-   What do you do in a day?
+-   Do you spend your days how you expect?
+-   Is any difference in how you spend your time this semester compared to last semester?
+
+**Summary Statistics**
+
+The variables that will be analyzed are hours spent studying, hours sleeping, and hours spent listening to music during the period.
+
+```{r echo=FALSE}
+inem.3vars<-subset(personal_data, select=c("Time.spent.listening.to.music..hrs.", "Study.hrs.", "Sleep.hrs."))
+summary(inem.3vars)
+
+
+```
+
+```{r echo=FALSE}
+sd_study <- sd(personal_data$Study.hrs.)
+print("Standard deviation for Studying:")
+sd_study
+sd_sleep <- sd(personal_data$Sleep.hrs.)
+print("Standard deviation for sleeping:")
+sd_sleep
+sd_music <- sd(personal_data$Time.spent.listening.to.music..hrs.)
+print("Standard deviation for music:")
+sd_music
+```
+
+Summary statistics for the variables:
+
+1.  Mean and standard deviation for the hours spent studying variable: Mean = 3.008, Standard Deviation = 1.558019.
+
+2.  Mean and standard deviation for the hours spent sleeping variable: Mean = 6.189, Standard Deviation = 1.531514.
+
+3.  Mean and standard deviation for Time spent listening to music (hours) variable: Mean = 2.246, Standard Deviation = 1.259311.
+
+**Checking the four conditions required for using the t-distribution for each variable:**
+
+1.  Random Sampling: My data was collected through a random sampling process and the sample observations are independent and representative of the population.
+
+2.  Independence: The variables are independent of each other and as such, my study hours, sleep hours and time spent listening to music do not depend each other or influence the value of another observation.
+
+3.  No Extreme Outliers: There are no extreme outlieres in my data set that could significantly affect the results.
+
+4.  Normality: From my analysis, my data approximately follows a normal distribution. All histograms ploted are unimodal and normally distributed except that of my music listening hours.
+
+```{r echo=FALSE}
+boxplot(personal_data$Study.hrs., ylab="Study", main="Study hours for Each Day")
+hist(personal_data$Study.hrs., main="Histogram of study hours ", xlab="study hours", ylab="frequency", ylim = c(0, 35), xlim = c(0, 8), breaks = 10, col = "pink")
+
+```
+
+This histogram above represents my study hours over time. It is unimodal and normally distributed. On the other hand, the boxplot does not represent any outliers.
+
+```{r echo=FALSE}
+boxplot(personal_data$Sleep.hrs., ylab="sleep", main="Sleep hours for  Each Day")
+hist(personal_data$Sleep.hrs., main="Histogram of sleep hours ", xlab="sleep hours", ylab="frequency", ylim = c(0, 35), xlim = c(2, 10), breaks = 10, col = "beige")
+```
+
+This histogram above represents my sleep hours over time. It is unimodal and normally distributed. On the other hand, the boxplot does not represent any outliers.
+
+```{r echo=FALSE}
+boxplot(personal_data$Time.spent.listening.to.music..hrs., ylab="Music", main="Hours Spent listening to music Each Day")
+hist(personal_data$Time.spent.listening.to.music..hrs., main="Histogram of music listening hours ", xlab="music hours", ylab="frequency", ylim = c(0, 60), xlim = c(0, 7), breaks = 10, col = "skyblue")
+```
+
+This histogram above represents my music listening hours over time. It is unimodal but not normally distributed. On the other hand, the boxplot does not represent any outliers.
+
+## Data Analysis
+
+### Part 1: Confidence Intervals
+
+**95% confidence interval for the mean number of hours spent studying per day**
+
+Based on my analysis, I can say with 95% confidence that the average number of hours spent studying per day falls within the range of approximately 2.783 to 3.232 hours. This means that, on average, I spend between 2.783 and 3.232 hours studying each day.
+
+```{r include=FALSE}
+meanpd_study <- mean(personal_data$Study)
+sdpd_study <- sd(personal_data$Study)
+npd_study <- length(personal_data$Study)
+SEpd_study <-sdpd_study/sqrt(npd_study)
+dfpd_study <- npd_study - 1
+
+t.crit <- qt(0.95, dfpd_study)
+
+(lowerstudy <- meanpd_study - t.crit*SEpd_study)
+(upperstudy <- meanpd_study + t.crit*SEpd_study)
+
+```
+
+**95% confidence interval for the mean number of hours spent sleeping per day**
+
+Based on my analysis, I can say with 95% confidence that the average number of hours of sleep falls within the range of approximately 5.969 to 6.410 hours. This means that, on average, I sleep between 5.969 and 6.410 hours each day.
+
+```{r include=FALSE}
+meanpd_sleep <- mean(personal_data$Sleep.hrs.)
+sdpd_sleep <- sd(personal_data$Sleep.hrs.)
+npd_sleep <- length(personal_data$Sleep.hrs.)
+SEpd_sleep <-sdpd_sleep/sqrt(npd_sleep)
+dfpd_sleep <- npd_sleep - 1
+
+t.crit <- qt(0.95, dfpd_sleep)
+
+(lowersleep <- meanpd_sleep - t.crit*SEpd_sleep)
+(uppersleep <- meanpd_sleep + t.crit*SEpd_sleep)
+
+```
+
+**95% confidence interval for the mean number of hours spent listening to music per day**
+
+Based on my analysis, I can say with 95% confidence that the average time spent listening to music per day falls within the range of approximately 2.065 to 2.428 hours. This means that, on average, I spend between 2.065 and 2.428 hours listening to music each day.
+
+```{r include=FALSE}
+meanpd_music <- mean(personal_data$Time.spent.listening.to.music..hrs.)
+sdpd_music <- sd(personal_data$Time.spent.listening.to.music..hrs.)
+npd_music <- length(personal_data$Time.spent.listening.to.music..hrs.)
+SEpd_music <-sdpd_music/sqrt(npd_music)
+dfpd_music <- npd_music - 1
+
+
+t.crit <- qt(0.95, dfpd_music)
+
+(lowermusic <- meanpd_music - t.crit*SEpd_music)
+(uppermusic <- meanpd_music + t.crit*SEpd_music)
+
+```
+
+### Part 2: One-Sample Hypothesis Tests
+
+**Hypothesis for study hours**
+
+Based on the results, the p-value is extremely small (less than 2.2e-16), indicating strong evidence to reject the null hypothesis.
+
+$H_0: \mu = 3.13$
+
+$H_A: \mu \neq 3.13$
+
+$\alpha = 0.05$
+
+The hypothesis test indicates strong evidence to reject the null hypothesis (H0: mu = 3.13), supporting the alternative hypothesis (HA: mu \> 3.13), implying that the mean study time per day is likely greater than 3.13 hours. This suggests that I study more than the average McGill University student, who spends an average of 3.13 hours studying per day.
+
+The 95% confidence interval provides a range within which the true mean of study hours per day is likely to fall, with the lower bound at 2.782932. This indicates that, with 95% confidence, we can say that the true mean of study hours per day is greater than 2.782932, which is still higher than the reference value of 3.13 hours.
+
+```{r include=FALSE}
+
+t.test(personal_data$Study.hrs.,var.equal=FALSE, #independent groups
+       paired=FALSE, #independent groups
+       conf.level=0.95, #alpha = 0.05
+       alternative="greater" )
+
+
+
+```
+
+**Hypothesis for sleep hours**
+
+According to the National Institutes of Health (NIH), the average adult sleeps less than seven hours per night. For the sake of this case study, I will be going with the median which is 8 hours per day.
+
+$H_0: \mu = 8.0$
+
+$H_A: \mu \neq 8.0$
+
+$\alpha = 0.05$
+
+Based on the results, the p-value is extremely small (less than 2.2e-16), indicating strong evidence to reject the null hypothesis. The 95% confidence interval provides a range within which the true mean of sleep hours per day is likely to fall, with the lower bound at 5.968571. This indicates that, with 95% confidence, I can say that the true mean of sleep hours per day is greater than 5.968571, which is less than the hypothesized value of 8 hours.
+
+The sample mean estimate, 6.189394, represents the observed mean sleep hours in the sample, which is also less than the hypothesized value of 8 hours.
+
+Overall, the analysis suggests strong evidence that my average sleep hours per day is significantly different from 8 hours, based on the data collected so far and as such, I will reject the null hypothesis.
+
+```{r include=FALSE}
+
+t.test(personal_data$Sleep.hrs.,var.equal=FALSE, #independent groups
+       paired=FALSE, #independent groups
+       conf.level=0.95, #alpha = 0.05
+       alternative="greater" )
+
+
+
+```
+
+**Hypothesis for hours spent listening to music**
+
+According to statistics, on average, a person spends around 148 minutes per day (i.e. 2.47 hours) listening to music on Spotify.
+
+$H_0: \mu = 2.47$
+
+$H_A: \mu \neq 2.47$
+
+$\alpha = 0.05$
+
+Based on the results, the p-value is extremely small (less than 2.2e-16), indicating strong evidence to reject the null hypothesis. This means that the mean time spent listening to music per day is significantly greater than 2.47 hours, as hypothesized.
+
+The 95% confidence interval provides a range within which the true mean of time spent listening to music per day is likely to fall, with the lower bound at 2.064637. This indicates that, with 95% confidence, the true mean of time I spent listening to music per day is greater than 2.064637, which is still higher than the reference value of 2.47 hours.
+
+The sample mean estimate, 2.246212, represents the observed mean time spent listening to music in the sample, which is also greater than the reference value of 2.47 hours.
+
+```{r include=FALSE}
+
+t.test(personal_data$Time.spent.listening.to.music..hrs.,var.equal=FALSE, #independent groups
+       paired=FALSE, #independent groups
+       conf.level=0.95, #alpha = 0.05
+       alternative="greater" )
+
+```
+
+### Part 3: Two-Sample Hypothesis Tests
+
+3.1. Two subsets of my personalized data set were created: "First" for semester 1 data (First) and "Second" for semester 2 data (Second). The independent groups assumption were checked by ensuring that the observations in each subset were independent of each other, meaning they are not influenced by the same factors or individuals.
+
+3.2. To further understand my study pattern, I went ahead and created a random sample of 10 days from each subset in question 3.1. I was able to conclude that my average study hours for second semester is more than that of first semester.
+
+The two-sample t-test (Welch's) was used to compare the average hours studied in 10 random selections in both first and second semesters. The mean hours studied in the first semester was 2.7, while in the second semester it was 4.35. The t-test indicated a significant difference (p \< 0.05), with the average hours studied significantly lower in the first semester compared to the second semester.
+
+3.3. A random selection of the first 10 days from each subset was done and analysed as well.
+
+The two-sample t-test (Welch's) was used to compare the average hours studied in the first 10 days both first and second semesters. The mean hours studied in the first semester was 3.3, while in the second semester it was 3.65. The t-test indicated a significant difference (p \< 0.05), with the average hours studied significantly lower in the first semester compared to the second semester.
+
+Therefore, based on the data collected so far, I cannot conclude that there is a statistically significant difference in the mean study hours per day between the two subsets.
+
+```{r include=FALSE}
+#create subsets by term
+(First <-subset(personal_data, Semester=="First", select=Study.hrs.))
+(Second <-subset(personal_data, Semester=="Second", select=Study.hrs.))
+
+mean(First$Study.hrs.)
+mean(Second$Study.hrs.)
+
+```
+
+```{r include=FALSE}
+#part 3.2 - create a random sample of 10 days from each subset
+(ran10_one<-sample(First$Study.hrs., 10))
+(mean(ran10_one))
+(ran10_two<-sample(Second$Study.hrs., 10))
+(mean(ran10_two))
+
+#First semester mean is 2.7
+#Second semester mean is 4.35
+
+#two sample t test for both subsets
+
+t.test(ran10_one,ran10_two, 
+       var.equal=FALSE, 
+       paired=FALSE, 
+       conf.level=0.95, 
+       alternative="two.sided")
+
+t.test(ran10_one,ran10_two, 
+       var.equal=FALSE, 
+       paired=FALSE, 
+       conf.level=0.95, 
+       alternative="greater")
+
+```
+
+```{r include=FALSE}
+#part 3.3 - select the first 10 days from each subset
+(first10_one<-First[1:10,1])
+(mean(first10_one))
+(first10_two<-Second[1:10,1])
+(mean(first10_two))
+
+#First semester mean is 3.3
+#Second semester mean is 3.65
+
+#two sample t test for both subsets
+t.test(first10_one, first10_two, 
+       var.equal=FALSE, 
+       paired=FALSE, 
+       conf.level=0.95, 
+       alternative="two.sided")
+
+t.test(first10_one,first10_two, 
+       var.equal=FALSE, 
+       paired=FALSE, 
+       conf.level=0.95, 
+       alternative="greater")
+```
+
+## Conclusion
+
+In conclusion, in a day, I spend a significant amount of time studying, followed by an adequate amount of time for sleeping. Additionally, I allocate a notable portion of my time to listening to music. Overall, my daily routine aligns with my expectations. I dedicate a substantial amount of time to studying, ensure sufficient time for sleep, and enjoy listening to music as a part of my daily activities.
+
+There may be a difference in how I spend my time this semester compared to the last semester, particularly in terms of study time. I noticed that I so far, the my average study hours has increased as compared to first semester. This just goes to show that I am enjoying my program so far and always looking for ways to expand my knowledge in the subject matter. However, further analysis of the data is required to determine the specific differences and any changes in study time.
+
+By completing the report, I have learned about my priorities and how I allocate my time throughout a day. I have reaffirmed my commitment to studying, recognized the importance of sufficient sleep, and acknowledged the significance of music in my daily life. This self-reflection enables me to make informed decisions about my daily habits and potentially make adjustments to optimize my time management and overall well-being.
